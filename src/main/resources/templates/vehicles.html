@@ -1,54 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
-    <h1 align="center">Транспортные средства</h1>
-    
-    <table border="2" align="center">
-    	
-    	<thead>
-    		<th> Год Выпуска </th>
-    		<th> Цвет кузова </th>
-    		<th> Пробег </th>
-    		<th> Количество владельцев </th>
-    		<th> Марка </th>
-    		<th> Цена </th>
-    		<th> Действия </th>
-    	</thead>
-    	
-    	<tbody th:each="vehicle : ${vehicleList}" border="1px">
-    		<th>[[${vehicle.getProductionYear()}]]</th>
-    		<th>[[${vehicle.getBodyColor()}]]</th>
-    		<th>[[${vehicle.getMileage()}]]</th>
-    		<th>[[${vehicle.getNumberOfOwners()}]]</th>
-    		<th>[[${vehicle.getBrand().getName()}]]</th>
-    		<th>[[${vehicle.getPrice()}]]</th>
-    		<th>
-    			<form th:action="@{/update/} + ${vehicle.getUuid()} + '/vehicle'" method="get">
-    				<button type="submit" >Обновить</button>
-    			</form>
-    			<form th:action="@{/vehicle/} + ${vehicle.getUuid()}" method="delete">
-    				<button type="submit" >Удалить</button>
-    			</form>
-    		</th>
-    	</tbody>
-    
-    </table>
-	
-	<form th:action="@{/vehicle/create}" method="get">
-		<div >
-			<input type="submit" value="Создать новое траспортное средство"></input>
-		</div>
-	</form>
-	
-	<form th:action="@{/brands}" method="get">
-		<div >
-			<input type="submit" value="Перейти к маркам"></input>
-		</div>
-	</form>
-    
-</body>
+	<head>
+	    <meta charset="UTF-8">
+	    <title>Login</title>
+	</head>
+	<body>
+	    <h1 align="center">Транспортные средства</h1>
+	    
+	    <table border="2" align="center">
+	    	
+	    	<thead>
+	    		<th> Год Выпуска </th>
+	    		<th> Цвет кузова </th>
+	    		<th> Пробег </th>
+	    		<th> Количество владельцев </th>
+	    		<th> Марка </th>
+	    		<th> Цена </th>
+	    		<th> Действия </th>
+	    	</thead>
+	    	
+	    	<tbody th:each="vehicle : ${vehicleList}" border="1px">
+	    		<th>[[${vehicle.getProductionYear()}]]</th>
+	    		<th>[[${vehicle.getBodyColor()}]]</th>
+	    		<th>[[${vehicle.getMileage()}]]</th>
+	    		<th>[[${vehicle.getNumberOfOwners()}]]</th>
+	    		<th>[[${vehicle.getBrand().getName()}]]</th>
+	    		<th>[[${vehicle.getPrice()}]]</th>
+	    		<th>
+	    			<form th:action="@{/update/} + ${vehicle.getUuid()} + '/vehicle'" method="get">
+	    				<button type="submit" >Обновить</button>
+	    			</form>
+	    			<form th:action="@{/vehicle/} + ${vehicle.getUuid()}" method="delete">
+	    				<button type="submit" >Удалить</button>
+	    			</form>
+	    		</th>
+	    	</tbody>
+	    
+	    </table>
+		
+		<form th:action="@{/vehicle/create}" method="get">
+			<div >
+				<input type="submit" value="Создать новое траспортное средство"></input>
+			</div>
+		</form>
+		
+		<form th:action="@{/brands}" method="get">
+			<div >
+				<input type="submit" value="Перейти к маркам"></input>
+			</div>
+		</form>
+	    
+	</body>
 </html>

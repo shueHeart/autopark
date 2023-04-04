@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.enterprise.model.Enterprise;
 import com.example.demo.enterprise.model.EnterpriseDTO;
@@ -22,6 +23,16 @@ public class EnterpriseService {
 	
 	@Autowired
 	private ManagerRepository managerRepository;
+	
+	public ModelAndView getEnterprisesTable(Manager manager) {
+		
+		ModelAndView enterprises = new ModelAndView("enterprises");
+		
+		enterprises.addObject("enterpriseList", findAllEnterprisesFull());
+		
+		return enterprises;
+		
+	}
 	
 	public List<EnterpriseDTO> findAllEnterprises() {
 		return enterpriseRepository.findAll().stream()

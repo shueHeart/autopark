@@ -9,21 +9,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.enterprise.model.Enterprise;
 import com.example.demo.enterprise.model.EnterpriseDTO;
 import com.example.demo.enterprise.service.EnterpriseService;
 
 @RestController
-public class EnterpriseController {
+public class EnterpriseController extends BaseController {
 
 	@Autowired
 	private EnterpriseService enterpriseService;
 	
 	@GetMapping("/enterprises")
-	public List<EnterpriseDTO> findAllEnterprises() {
+	public ModelAndView findAllEnterprises() {
 		
-		return enterpriseService.findAllEnterprises();
+		return enterpriseService.getEnterprisesTable(getCurrentUser());
 		
 	}
 	

@@ -38,11 +38,11 @@ public class Vehicle {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
-    
+	
     @ManyToOne
     @JoinColumn(name = "enterprise_id")
 	private Enterprise enterprise;
-    
+
     @OneToMany(mappedBy="vehicle")
     private List<Driver> drivers;
 	

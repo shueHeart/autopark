@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -229,19 +232,46 @@ public class VehicleService {
 		
 	}
 	
-	public List<VehicleDTO> findAllVehiclesForManager(String managerUsername) {
+	public Page<VehicleDTO> findAllVehiclesForManager(String managerUsername, int pageNumber, int pageSize) {
+		
+        
+		
+		Manager manager = (Manager) userDetailsManager.loadUserByUsername(managerUsername);
+		
+		PageRequest pageable = PageRequest.of(pageNumber, pageSize);
+		
+		Page<Vehicle> vehicles = vehicleRepository.findAllByEnterprise_Managers(manager, pageable);
+		
+		List<VehicleDTO> vehicleDtosList = vehicles.getContent().stream().map(vehicle -> VehicleDTO.fromVehicle(vehicle)).collect(Collectors.toList());
+		
+		Page<VehicleDTO> vehicleDtos = new PageImpl<VehicleDTO>(vehicleDtosList, vehicles.getPageable(), vehicles.getTotalElements());
+		
+//		
+//		List<Enterprise> enterprises = enterpriseService.findAllEnterprisesByManagerId(manager.getUuid());
+//		
+//		
+//		
+//		for (Enterprise enterprise : enterprises) {
+//			vehicles.addAll(enterprise.getVehicles());
+//		}
+		
+		return vehicleDtos;//vehicles.stream().map(vehicle -> VehicleDTO.fromVehicle(vehicle)).collect(Collectors.toList());
+		
+	}
+	
+	public List<DriverDTO> findAllDriversForManager(String managerUsername) {
 		
 		Manager manager = (Manager) userDetailsManager.loadUserByUsername(managerUsername);
 		
 		List<Enterprise> enterprises = enterpriseService.findAllEnterprisesByManagerId(manager.getUuid());
 		
-		List<Vehicle> vehicles = new ArrayList<Vehicle>();
+		List<Driver> drivers = new ArrayList<Driver>();
 		
 		for (Enterprise enterprise : enterprises) {
-			vehicles.addAll(enterprise.getVehicles());
+			drivers.addAll(enterprise.getDrivers());
 		}
 		
-		return vehicles.stream().map(vehicle -> VehicleDTO.fromVehicle(vehicle)).collect(Collectors.toList());
+		return drivers.stream().map(driver -> DriverDTO.fromDriver(driver)).collect(Collectors.toList());
 		
 	}
 	

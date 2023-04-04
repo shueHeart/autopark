@@ -80,7 +80,7 @@ public class CreatorService {
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		
 		List<Brand> brands = brandRepository.findAll();
-		
+//		log.info(drivers.size() / creator.getVehicleNum() + "");
 		for (int vehicleNum = 0; vehicleNum < creator.getVehicleNum(); ++vehicleNum) {
 			
 			Vehicle vehicle = new Vehicle();
@@ -102,6 +102,33 @@ public class CreatorService {
 		
 			for (int i = vehicleNum * (drivers.size() / creator.getVehicleNum()); i < vehicleNum * (drivers.size() / creator.getVehicleNum()) + (drivers.size() / creator.getVehicleNum()) && i < drivers.size(); ++i) {
 			
+				drivers.get(i).setVehicle(vehicle);
+				driverRepository.save(drivers.get(i));
+				driversForVehicle.add(drivers.get(i));
+			}
+			
+			if (driversForVehicle.size() != 0 && vehicleNum % 5 == 0) {
+				vehicle.setCurrentDriverUuid(driversForVehicle.get(0).getUuid());
+			}
+			
+			vehicles.add(vehicle);
+			vehicle.setBodyColor(colors[randomNumber(colors.length - 1)]);
+			vehicle.setBrand(brands.get(randomNumber(brands.size() - 1)));
+			vehicle.setMileage(randomNumber(500000));
+			vehicle.setNumberOfOwners(randomNumber(15) + 1);
+			vehicle.setPrice(randomNumber(5000000) + 100000);
+			vehicle.setProductionYear(randomNumber(33) + 1990);
+			
+			vehicle.setEnterprise(enterprise);
+			
+			
+			vehicle = vehicleRepository.save(vehicle);
+			
+			List<Driver> driversForVehicle = new ArrayList<Driver>();
+			vehicle.setDrivers(driversForVehicle);		
+			//warning
+			for (int i = vehicleNum * (drivers.size() / creator.getVehicleNum()); i < vehicleNum * (drivers.size() / creator.getVehicleNum()) + (drivers.size() / creator.getVehicleNum()) && i < drivers.size(); ++i) {
+//				log.info(i + "");
 				drivers.get(i).setVehicle(vehicle);
 				driverRepository.save(drivers.get(i));
 				driversForVehicle.add(drivers.get(i));
