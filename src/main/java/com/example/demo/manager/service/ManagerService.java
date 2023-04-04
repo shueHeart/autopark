@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,15 +17,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.controller.LoginController;
 import com.example.demo.enterprise.model.Enterprise;
 import com.example.demo.enterprise.repository.EnterpriseRepository;
 import com.example.demo.manager.model.Manager;
 import com.example.demo.manager.model.ManagerDTO;
 import com.example.demo.manager.repository.ManagerRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ManagerService {
 	
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+
 	@Autowired
 	private ManagerRepository managerRepository;
 	
@@ -36,7 +44,7 @@ public class ManagerService {
 	private PasswordEncoder passwordEncoder;
 	
 	public Manager createOrUpdateManager(Manager manager) {
-		
+		log.info(manager.getPassword());
 		manager.setPassword(passwordEncoder.encode(manager.getPassword()));
 		
 //		Manager manager = new Manager(username, "123", true, true, true, true, new ArrayList());

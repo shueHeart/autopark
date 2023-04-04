@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.creator.model.Creator;
 import com.example.demo.creator.service.CreatorService;
+import com.example.demo.enterprise.model.EnterpriseDTO;
 
 @RestController
 public class CreatorController extends BaseController{
@@ -16,8 +17,8 @@ public class CreatorController extends BaseController{
 	
 	
 	@PostMapping("/creator/create")
-	public void creator(@RequestBody Creator creator) {
-		creatorService.create(creator, getCurrentUser());
+	public EnterpriseDTO creator(@RequestBody Creator creator) {
+		return creatorService.create(creator, getCurrentUser());
 	}
 	
 }

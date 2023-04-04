@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.controller.LoginController;
+import com.example.demo.driver.model.Driver;
+import com.example.demo.driver.model.DriverDTO;
 import com.example.demo.enterprise.model.Enterprise;
 import com.example.demo.enterprise.repository.EnterpriseRepository;
 import com.example.demo.enterprise.service.EnterpriseService;
@@ -86,7 +88,7 @@ public class VehicleService {
 	public VehicleDTO saveJsonVehicle(Vehicle vehicle, String username) {
 		
 		if (!managerExists(vehicle.getEnterprise().getUuid(), username)) {
-			throw new RuntimeException("Недостаточно прав");
+			throw new RuntimeException("Ð�ÐµÐ´Ð¾Ñ�Ñ‚Ð°Ñ‚Ð¾Ñ‡Ð½Ð¾ Ð¿Ñ€Ð°Ð²");
 		}
 		
 		vehicle.setBrand(brandRepository.findById(vehicle.getBrand().getUuid()).get());
@@ -102,7 +104,7 @@ public class VehicleService {
 		ModelAndView updateVehicle = new ModelAndView("updateVehicle");
 		
 		Vehicle vehicle = vehicleRepository.findById(vehicleUuid)
-				.orElseThrow(() -> new RuntimeException("Транспортное средство не найдено."));
+				.orElseThrow(() -> new RuntimeException("Ð¢Ñ€Ð°Ð½Ñ�Ð¿Ð¾Ñ€Ñ‚Ð½Ð¾Ðµ Ñ�Ñ€ÐµÐ´Ñ�Ñ‚Ð²Ð¾ Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½Ð¾."));
 		
 		List<Brand> brandList = brandRepository.findAll();
 		
@@ -181,8 +183,8 @@ public class VehicleService {
 	
 	public ModelAndView saveBrand(Brand brand) {
 		
-		List<Vehicle> vehicles = vehicleRepository.findAllByBrand(brand);
-		brand.setVehicles(vehicles);
+//		List<Vehicle> vehicles = vehicleRepository.findAllByBrand(brand);
+//		brand.setVehicles(vehicles);
 		
 		brandRepository.save(brand);
 		
@@ -198,7 +200,7 @@ public class VehicleService {
 		ModelAndView updateBrand = new ModelAndView("updateBrand");
 		
 		Brand brand = brandRepository.findById(brandUuid)
-				.orElseThrow(() -> new RuntimeException("Транспортное средство не найдено."));
+				.orElseThrow(() -> new RuntimeException("Ð¢Ñ€Ð°Ð½Ñ�Ð¿Ð¾Ñ€Ñ‚Ð½Ð¾Ðµ Ñ�Ñ€ÐµÐ´Ñ�Ñ‚Ð²Ð¾ Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½Ð¾."));
 				
 		updateBrand.addObject("brand", brand);
 		updateBrand.addObject("typeList", VehicleType.values());
@@ -240,6 +242,22 @@ public class VehicleService {
 		}
 		
 		return vehicles.stream().map(vehicle -> VehicleDTO.fromVehicle(vehicle)).collect(Collectors.toList());
+		
+	}
+	
+	public List<DriverDTO> findAllDriversForManager(String managerUsername) {
+		
+		Manager manager = (Manager) userDetailsManager.loadUserByUsername(managerUsername);
+		
+		List<Enterprise> enterprises = enterpriseService.findAllEnterprisesByManagerId(manager.getUuid());
+		
+		List<Driver> drivers = new ArrayList<Driver>();
+		
+		for (Enterprise enterprise : enterprises) {
+			drivers.addAll(enterprise.getDrivers());
+		}
+		
+		return drivers.stream().map(driver -> DriverDTO.fromDriver(driver)).collect(Collectors.toList());
 		
 	}
 	
