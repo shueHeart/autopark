@@ -42,11 +42,11 @@ public class Enterprise {
 	private List<Manager> managers = new ArrayList<Manager>();
 	
 //	@JsonIgnore
-	@OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "enterprise")
 	private List<Vehicle> vehicles = new ArrayList<Vehicle>();
 	
 //	@JsonIgnore
-	@OneToMany(mappedBy = "enterprise", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "enterprise")
 	private List<Driver> drivers = new ArrayList<Driver>();
 
 	public UUID getUuid() {
