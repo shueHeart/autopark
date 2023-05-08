@@ -16,4 +16,9 @@ public interface EnterpriseRepository extends CrudRepository<Enterprise, UUID> {
 	
 	List<Enterprise> findAllByManagersIn(List<Manager> manager);
 	
+//	List<Enterprise> findAllByManagerId(UUID managerId);
+	
+    List<Enterprise> findEnterprisesByManagers_Uuid(UUID id); // метод для получения списка EntityA связанных с EntityV по id
+
+	
 }

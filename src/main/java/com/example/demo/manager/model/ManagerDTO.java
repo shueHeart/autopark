@@ -11,12 +11,14 @@ public class ManagerDTO {
 		
 	private List<UUID> enterprises = new ArrayList<UUID>();
 	
+	private String timezone;
+	
 	private ManagerDTO(Manager manager) {
 		
 		
 		this.username = manager.getUsername();
 		this.enterprises = manager.getEnterprises().stream().map(enterprise -> enterprise.getUuid()).collect(Collectors.toList());
-		
+		this.timezone = manager.getTimezone();
 		
 	}
 	
@@ -41,6 +43,14 @@ public class ManagerDTO {
 	
 	public void setUsername(String username) { 
 		this.username = username;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
 	}
 	
 	

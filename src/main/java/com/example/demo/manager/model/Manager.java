@@ -2,7 +2,9 @@ package com.example.demo.manager.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -49,10 +51,12 @@ public class Manager implements UserDetails {
 	
 	private boolean accountNonLocked = true;
 	
-	@ManyToMany(fetch = FetchType.EAGER) 
-	private List<Authority> authorities = new ArrayList<Authority>();
+	private String timezone;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER) 
+	private Set<Authority> authorities = new HashSet<Authority>();
+	
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Enterprise> enterprises = new ArrayList<Enterprise>();
 	
 	public Manager() {
@@ -137,8 +141,16 @@ public class Manager implements UserDetails {
 		return authorities;
 	}
 
-	public void setAuthorities(List<Authority> authorities) {
+	public void setAuthorities(Set<Authority> authorities) {
 		this.authorities = authorities;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
 	}
 	
 	

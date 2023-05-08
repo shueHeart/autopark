@@ -15,6 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import com.example.demo.controller.LoginController;
 import com.example.demo.manager.service.UserDetailsManager;
@@ -46,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		http.csrf().disable().authorizeRequests().antMatchers("/auth", "/login", "/create/manager", "/manager")
 //				.permitAll().anyRequest().authenticated();
 
-		http.authorizeRequests().anyRequest().hasAuthority("ADMIN")
+		http.authorizeRequests()
 			.and()
 				.formLogin()
 				.loginPage("/login")
@@ -65,6 +68,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		authProvider.setPasswordEncoder(passwordEncoder());
 		return authProvider;
 	}
+	
+    @Bean
+    public TelegramBotsApi telegramBotsApi() throws TelegramApiException{
+        return new TelegramBotsApi(DefaultBotSession.class);
+    }
+
 //    @Bean
 //    @Override
 //    public AuthenticationManager authenticationManagerBean() throws Exception {

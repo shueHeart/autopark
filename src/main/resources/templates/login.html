@@ -11,6 +11,8 @@
 <body>
     <h1 align="center">Login</h1>
     <form th:action="@{/login}" method="post" align="center">
+    	<input type="hidden" name="timezone" id="timeZone">
+
         <div margin = "5px">
             <label>Username:</label>
             <input type="text" th:name="username"/>
@@ -23,5 +25,10 @@
             <button type="submit">Log in</button>
         </div>
     </form>
+    
+    <script>
+    	var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    	document.getElementById("timeZone").value = timeZone;
+	</script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -45,8 +46,8 @@ public class VehicleController extends BaseController{
 	private EnterpriseService enterpriseService;
 	
 	@GetMapping("/vehicles")
-	public ModelAndView getAllVehicles() {
-		return vehicleService.getAllVehicles();
+	public ModelAndView getAllVehicles(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) {
+		return vehicleService.getAllVehicles(getCurrentUser().getUsername(), pageNumber, pageSize, getCurrentUser().getTimezone());
 	}
 	
 	@GetMapping("/json/vehicles") 
@@ -134,7 +135,7 @@ public class VehicleController extends BaseController{
 	
 	@GetMapping("/vehicle_list")
 	public Page<VehicleDTO> findAllVehiclesForManager(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) {
-		return vehicleService.findAllVehiclesForManager(getCurrentUser().getUsername(), pageNumber, pageSize);
+		return vehicleService.findAllVehiclesDTOForManager(getCurrentUser().getUsername(), pageNumber, pageSize);
 	}
 	
 	@GetMapping("/driver_list")
@@ -160,6 +161,11 @@ public class VehicleController extends BaseController{
 		return vehicleService.deleteVehicle(vehicleUuid, getCurrentUser().getUsername());
 	}
 	
+	
+	@GetMapping("/enterprise/{enterpriseId}/vehicle_list")
+	public ModelAndView findPageVehicleByEnterprise(@PathVariable("enterpriseId") UUID enterpriseId, @RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) {
+		return vehicleService.findPageVehicleByEnterprise(enterpriseId, pageSize, pageNumber);
+	}
 	
 	
 }

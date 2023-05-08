@@ -1,7 +1,11 @@
 package com.example.demo.vehicle.service;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -57,13 +61,18 @@ public class VehicleService {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
 	
-	public ModelAndView getAllVehicles() {
+	public ModelAndView getAllVehicles(String managerName, int pageNumber, int pageSize, String timezone) {
 		
 		ModelAndView vehicles = new ModelAndView("vehicles");
-	    
-		List<Vehicle> vehicleList = vehicleRepository.findAll();
 		
-		vehicles.addObject("vehicleList", vehicleList);
+		Page<Vehicle> vehiclePage = findAllVehiclesForManager(managerName, pageNumber, pageSize);
+		
+		TimeZone timeZone = TimeZone.getTimeZone(timezone);
+		SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		date.setTimeZone(timeZone);
+		
+		vehicles.addObject("date", date);
+		vehicles.addObject("vehiclePage", vehiclePage);
 		
 		return vehicles;
 		
@@ -232,9 +241,7 @@ public class VehicleService {
 		
 	}
 	
-	public Page<VehicleDTO> findAllVehiclesForManager(String managerUsername, int pageNumber, int pageSize) {
-		
-        
+	public Page<Vehicle> findAllVehiclesForManager(String managerUsername, int pageNumber, int pageSize) {
 		
 		Manager manager = (Manager) userDetailsManager.loadUserByUsername(managerUsername);
 		
@@ -242,36 +249,40 @@ public class VehicleService {
 		
 		Page<Vehicle> vehicles = vehicleRepository.findAllByEnterprise_Managers(manager, pageable);
 		
+		return vehicles;
+		
+	}
+	
+	public ModelAndView findPageVehicleByEnterprise(UUID enterpriseId, int pageSize, int pageNumber) {
+		
+		PageRequest pageable = PageRequest.of(pageNumber, pageSize);
+		
+		Page<Vehicle> vehiclePage = vehicleRepository.findAllByEnterpriseUuid(enterpriseId, pageable);
+		
+		ModelAndView vehiclePageView = new ModelAndView("vehicles");
+		
+		vehiclePageView.addObject("vehiclePage", vehiclePage);
+		
+		TimeZone timeZone = TimeZone.getTimeZone(enterpriseRepository.findById(enterpriseId).get().getTimezone());
+		SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		date.setTimeZone(timeZone);
+		
+		vehiclePageView.addObject("date", date);
+		
+		return vehiclePageView;
+		
+	}
+	
+	
+	public Page<VehicleDTO> findAllVehiclesDTOForManager(String managerUsername, int pageNumber, int pageSize) {
+	
+		Page<Vehicle> vehicles = findAllVehiclesForManager(managerUsername, pageNumber, pageSize);
+		
 		List<VehicleDTO> vehicleDtosList = vehicles.getContent().stream().map(vehicle -> VehicleDTO.fromVehicle(vehicle)).collect(Collectors.toList());
 		
 		Page<VehicleDTO> vehicleDtos = new PageImpl<VehicleDTO>(vehicleDtosList, vehicles.getPageable(), vehicles.getTotalElements());
 		
-//		
-//		List<Enterprise> enterprises = enterpriseService.findAllEnterprisesByManagerId(manager.getUuid());
-//		
-//		
-//		
-//		for (Enterprise enterprise : enterprises) {
-//			vehicles.addAll(enterprise.getVehicles());
-//		}
-		
-		return vehicleDtos;//vehicles.stream().map(vehicle -> VehicleDTO.fromVehicle(vehicle)).collect(Collectors.toList());
-		
-	}
-	
-	public List<DriverDTO> findAllDriversForManager(String managerUsername) {
-		
-		Manager manager = (Manager) userDetailsManager.loadUserByUsername(managerUsername);
-		
-		List<Enterprise> enterprises = enterpriseService.findAllEnterprisesByManagerId(manager.getUuid());
-		
-		List<Driver> drivers = new ArrayList<Driver>();
-		
-		for (Enterprise enterprise : enterprises) {
-			drivers.addAll(enterprise.getDrivers());
-		}
-		
-		return drivers.stream().map(driver -> DriverDTO.fromDriver(driver)).collect(Collectors.toList());
+		return vehicleDtos;
 		
 	}
 	
@@ -311,6 +322,10 @@ public class VehicleService {
 		log.info("false");
 		return false;
 		
+	}
+	
+	public List<VehicleDTO> findAllByEnterpriseUuid(UUID vehicleUuid) { 
+		return vehicleRepository.findAllByEnterpriseUuid(vehicleUuid).stream().map(vehicle -> VehicleDTO.fromVehicle(vehicle)).collect(Collectors.toList());
 	}
 	
 }

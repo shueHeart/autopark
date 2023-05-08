@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+
+</head>
+<body>
+    <h1 align="center">Login</h1>
+    <form th:action="@{/registration}" method="post" align="center">
+    	<input type="hidden" name="timezone" id="timeZone">
+
+        <div margin = "5px">
+            <label>Username:</label>
+            <input type="text" th:name="username"/>
+        </div>
+        <div>
+            <label>Password:</label>
+            <input type="password" th:name="password"/>
+        </div>
+        <div>
+            <button type="submit">Log in</button>
+        </div>
+    </form>
+    
+    <script>
+    	var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    	document.getElementById("timeZone").value = timeZone;
+	</script>
+</body>
+</html>

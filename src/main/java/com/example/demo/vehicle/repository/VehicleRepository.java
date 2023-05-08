@@ -23,6 +23,10 @@ public interface VehicleRepository extends PagingAndSortingRepository<Vehicle, U
 //	public List<Vehicle> findAllByEnterprise();
 	
 	Page<Vehicle> findAllByEnterprise_Managers(Manager manager, Pageable pageable);
+	
+	Page<Vehicle> findAllByEnterpriseUuid(UUID enterpriseUuid, Pageable pageable);
+	
+	List<Vehicle> findAllByEnterpriseUuid(UUID enterpriseUuid);
 
 //    Page<Vehicle> findByEnterprise_ManagersAndVehicleIsNotNull(Manager manager, Pageable pageable);
 	

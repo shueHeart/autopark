@@ -1,5 +1,7 @@
 package com.example.demo.vehicle.model;
 
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 import java.util.UUID;
 
 public class VehicleDTO {
@@ -20,6 +22,8 @@ public class VehicleDTO {
     
 	private UUID currentDriverUuid;
 	
+	private String sellDate;
+	
 	
     private VehicleDTO(Vehicle vehicle) {
     	
@@ -34,6 +38,12 @@ public class VehicleDTO {
     	if (vehicle.getBrand() != null) {
     		this.brandUuid = vehicle.getBrand().getUuid();
     	}
+    	
+    	TimeZone timezone = TimeZone.getTimeZone(vehicle.getEnterprise().getTimezone());
+		SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		date.setTimeZone(timezone);
+		
+		this.sellDate = date.format(vehicle.getSellDate());
     	
     }
     
@@ -103,6 +113,14 @@ public class VehicleDTO {
 
 	public void setCurrentDriverUuid(UUID currentDriverUuid) {
 		this.currentDriverUuid = currentDriverUuid;
+	}
+
+	public String getSellDate() {
+		return sellDate;
+	}
+
+	public void setSellDate(String sellDate) {
+		this.sellDate = sellDate;
 	}
 	
 	

@@ -1,11 +1,14 @@
 package com.example.demo.enterprise.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -33,6 +36,8 @@ public class Enterprise {
 	
 	private OrganizationalForm organizationalForm;
 	
+	private String timezone;
+	
 	@ManyToMany
 //	@JoinTable(
 //			name = "enterprise_manager",
@@ -41,13 +46,13 @@ public class Enterprise {
 //		)
 	private List<Manager> managers = new ArrayList<Manager>();
 	
-//	@JsonIgnore
-	@OneToMany(mappedBy = "enterprise")
+	@JsonIgnore
+	@OneToMany(mappedBy = "enterprise", fetch = FetchType.EAGER)
 	private List<Vehicle> vehicles = new ArrayList<Vehicle>();
 	
-//	@JsonIgnore
-	@OneToMany(mappedBy = "enterprise")
-	private List<Driver> drivers = new ArrayList<Driver>();
+	@JsonIgnore
+	@OneToMany(mappedBy = "enterprise", fetch = FetchType.EAGER)
+	private Set<Driver> drivers = new HashSet<Driver>();
 
 	public UUID getUuid() {
 		return uuid;
@@ -97,11 +102,11 @@ public class Enterprise {
 		this.vehicles = vehicles;
 	}
 
-	public List<Driver> getDrivers() {
+	public Set<Driver> getDrivers() {
 		return drivers;
 	}
 
-	public void setDrivers(List<Driver> drivers) {
+	public void setDrivers(Set<Driver> drivers) {
 		this.drivers = drivers;
 	}
 
@@ -111,6 +116,14 @@ public class Enterprise {
 
 	public void setManagers(List<Manager> managers) {
 		this.managers = managers;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
 	}
 
 	

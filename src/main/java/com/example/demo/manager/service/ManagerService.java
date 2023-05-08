@@ -44,7 +44,7 @@ public class ManagerService {
 	private PasswordEncoder passwordEncoder;
 	
 	public Manager createOrUpdateManager(Manager manager) {
-		log.info(manager.getPassword());
+		log.info(manager.getUsername());
 		manager.setPassword(passwordEncoder.encode(manager.getPassword()));
 		
 //		Manager manager = new Manager(username, "123", true, true, true, true, new ArrayList());
