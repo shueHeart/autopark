@@ -19,4 +19,7 @@
 
 ![Yw10_btIm2w](https://user-images.githubusercontent.com/95758078/236847435-a4b5bc8d-e7ce-4e3d-bf38-9847300f6a88.jpg)
 
+И практически всем данным функционалом можно удобно воспользоваться прямо из телеграма:
 
+![image](https://github.com/shueHeart/autopark/assets/95758078/2dfdb623-3b3c-4592-b83c-230e489e596c) 
+![image_2023-05-09_15-02-45](https://github.com/shueHeart/autopark/assets/95758078/652bc376-c024-4b74-9bb8-baa7f6ac992e)
